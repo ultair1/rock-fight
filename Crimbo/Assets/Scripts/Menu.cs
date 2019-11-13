@@ -1,0 +1,29 @@
+﻿using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.SceneManagement;
+
+public class Menu : MonoBehaviour
+{
+    public string level1;
+    public string level2;
+    public string endlessTing;
+
+    public void StartLevel1()
+    {
+        SceneManager.LoadScene(level1);
+    }
+    public void StartLevel2()
+    {
+        SceneManager.LoadScene(level2);
+    }
+    public void endlessMode()
+    {
+        SceneManager.LoadScene(endlessTing);
+    }
+
+    public void QuitGame()
+    {
+        Application.Quit();
+    }
+}

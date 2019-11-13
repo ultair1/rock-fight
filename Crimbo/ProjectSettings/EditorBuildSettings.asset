@@ -1,0 +1,62 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1045 &1
+EditorBuildSettings:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Scenes:
+  - enabled: 1
+    path: Assets/Scenes/Menu Screen.unity
+    guid: 6b4cef2b44ff7bd41956349990c28f69
+  - enabled: 1
+    path: Assets/Scenes/characterSelect.unity
+    guid: 6024097a4b3db0144bbcf20949585283
+  - enabled: 1
+    path: Assets/Scenes/characterSelectPowerUp.unity
+    guid: 0799f671136ef95418c84535929d1261
+  - enabled: 1
+    path: Assets/Scenes/everything.unity
+    guid: b94f35b2acc950542a899f5afcba8051
+  - enabled: 1
+    path: Assets/Scenes/Level2.unity
+    guid: aea5025019224bd44b3c0038f1fbfe3f
+  - enabled: 1
+    path: Assets/Scenes/endlessMode.unity
+    guid: 87cb977dbabef3b43be488cd8085b173
+  - enabled: 1
+    path: Assets/Scenes/Normal/IanVSDerrick.unity
+    guid: dfd44a16d246706419a7c173012ffedc
+  - enabled: 1
+    path: Assets/Scenes/Normal/IanVSIan.unity
+    guid: f72fcc402c6a8e84e9541f99d5b56abd
+  - enabled: 1
+    path: Assets/Scenes/Normal/IanVsKrillin.unity
+    guid: 6c8e001387c0276449ff23e43a874b5b
+  - enabled: 1
+    path: Assets/Scenes/Normal/IanVsNegative.unity
+    guid: 6e1760057705d1741aadf50d5e8915bd
+  - enabled: 1
+    path: Assets/Scenes/Normal/DerrickVSDerrick.unity
+    guid: e22f45adcb1e8ee4893245e46f5f5d7d
+  - enabled: 1
+    path: Assets/Scenes/Normal/DerrickVSIan.unity
+    guid: 12cb7d4ff00bc724db61d846d1960eab
+  - enabled: 1
+    path: Assets/Scenes/Normal/DerrickVSKrillin.unity
+    guid: 0f57d2faf8d2a324694e8a8a804cc927
+  - enabled: 1
+    path: Assets/Scenes/Normal/DerrickVSNegative.unity
+    guid: a9f8923128854ea42a9bc5a530453a2a
+  - enabled: 1
+    path: Assets/Scenes/Normal/KrillinVSDerrick.unity
+    guid: f2b2f3db28269614888a92d20517a53f
+  - enabled: 1
+    path: Assets/Scenes/Normal/KrillinVSIan.unity
+    guid: e4bf6919598780b4bb24fa03d33a8777
+  - enabled: 1
+    path: Assets/Scenes/Normal/KrillinVSKrillin.unity
+    guid: 9f8e5a7527871e64b8a4cb667fd8f8c3
+  - enabled: 1
+    path: Assets/Scenes/Normal/KrillinVSNegative.unity
+    guid: 7053977a38fa41d4abf93317f61964a5
+  m_configObjects: {}
