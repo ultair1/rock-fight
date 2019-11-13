@@ -22,8 +22,9 @@ public class scoring : MonoBehaviour
 
     // Start is called before the first frame update
     void Start()
-    {
-        InputScore = 0;   
+    {        
+        StartCoroutine(PostRequest(InputScore, InputName, InputEmail));
+        InputScore = 0;
     }
     public void scoreUp()
     {
@@ -38,7 +39,7 @@ public class scoring : MonoBehaviour
         }
         if (Input.GetKeyDown(KeyCode.Return))
         {
-            WriteScore(InputScore, InputName, InputEmail);
+            writeData();
         }
     }
 
@@ -51,25 +52,79 @@ public class scoring : MonoBehaviour
     {
         InputEmail = Email.text;
     }
-
-    public void WriteScore(int score, string name, string email)
+    void writeData()
     {
-            WWWForm form = new WWWForm();
-            form.AddField("score", score);
-            form.AddField("name", name);
-            form.AddField("email", email);
 
-            UnityWebRequest www = UnityWebRequest.Post(CreateUserURL, form);
+    }
+ /*   IEnumerator Upload()
+    {
+        //first create data or in the form of form data
+        WWWForm form = new WWWForm();
 
-            www.SendWebRequest();
-            if (www.isNetworkError || www.isHttpError)
+        //add fields to the form
+        form.AddField("score", InputScore);
+        form.AddField("name", InputName);
+        form.AddField("email", InputEmail);
+
+        //create object for UnityWebRequest class from unityengine.networking 
+        UnityWebRequest www = UnityWebRequest.Post(CreateUserURL, form);
+
+        //always should return in IEnumerator
+        yield return www.Send();
+        //check if API is valid
+        if (www.isNetworkError || www.isHttpError)
+        {
+            Debug.Log(www.error);
+        }
+        //if is valid
+        else
+        {
+            Debug.Log("Form upload complete!");
+        }
+    }*/
+
+    IEnumerator PostRequest(int InputScore, string InputName, string InputEmail)
+    {
+        WWWForm form = new WWWForm();
+        form.AddField("score", InputScore);
+        form.AddField("name", InputName);
+        form.AddField("email", InputEmail);
+
+        using (UnityWebRequest uwr = UnityWebRequest.Post("http://gamesuite.rf.gd/scores/InsertUser.php", form))
+        {
+
+
+            yield return uwr.SendWebRequest();
+
+            if (uwr.isNetworkError)
             {
-                Debug.Log(www.error);
+                Debug.Log("Error While Sending: " + uwr.error);
             }
             else
             {
-                Debug.Log("Form upload complete!");
+                Debug.Log("Received: " + uwr.downloadHandler.text);
             }
+        }    
     }
+
+    /*   public void WriteScore(int score, string name, string email)
+       {
+               WWWForm form = new WWWForm();
+               form.AddField("score", score);
+               form.AddField("name", name);
+               form.AddField("email", email);
+
+               UnityWebRequest www = UnityWebRequest.Post(CreateUserURL, form);
+
+               www.SendWebRequest();
+               if (www.isNetworkError || www.isHttpError)
+               {
+                   Debug.Log(www.error);
+               }
+               else
+               {
+                   Debug.Log("Form upload complete!");
+               }
+       }*/
 
 }
