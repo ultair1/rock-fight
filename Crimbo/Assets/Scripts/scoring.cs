@@ -1,130 +1,104 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using UnityEngine.Networking;
+﻿using UnityEngine;
+using System.Collections;
 using UnityEngine.UI;
 
 public class scoring : MonoBehaviour
 {
-    //public int score;
-    //public string playerName;
-    //public string email;
 
-    public int InputScore;
-    public string InputName;
-    public string InputEmail;
+    const string privateCode = "tE096hAKYEumPdA8PH2QnwHDr9lgXnrEC76Dne529EuA";
+    const string publicCode = "5dcf386cb5622e683c2089ec";
+    const string webURL = "http://dreamlo.com/lb/";
 
-    public GameObject player1;
+    public Highscore[] highscoresList;
+
+    public int score;
+    public new string name;
     public InputField PlayerName;
-    public InputField Email;
+    public Text uiText;
 
-    string CreateUserURL = "http://gamesuite.rf.gd/scores/InsertUser.php";
-
-    // Start is called before the first frame update
-    void Start()
-    {        
-        StartCoroutine(PostRequest(InputScore, InputName, InputEmail));
-        InputScore = 0;
-    }
-    public void scoreUp()
+    private void Update()
     {
-        InputScore = InputScore + Random.Range(1, 50);
+        uiText.text = score.ToString();
     }
-    // Update is called once per frame
-    void Update()
-    {
-        if (player1.activeInHierarchy == true)
-        {
-            InputScore = InputScore + 1;
-        }
-        if (Input.GetKeyDown(KeyCode.Return))
-        {
-            writeData();
-        }
-    }
-
     public void NameField()
     {
-        InputName = PlayerName.text;
+        name = PlayerName.text;
     }
 
-    public void EmailField()
+    public void WriteScore()
     {
-        InputEmail = Email.text;
+
+        AddNewHighscore(name, score);
+
+        DownloadHighscores();
     }
-    void writeData()
-    {
 
+    public void AddNewHighscore(string username, int score)
+    {
+        StartCoroutine(UploadNewHighscore(username, score));
     }
- /*   IEnumerator Upload()
+
+    IEnumerator UploadNewHighscore(string username, int score)
     {
-        //first create data or in the form of form data
-        WWWForm form = new WWWForm();
+        WWW www = new WWW(webURL + privateCode + "/add/" + WWW.EscapeURL(username) + "/" + score);
+        yield return www;
 
-        //add fields to the form
-        form.AddField("score", InputScore);
-        form.AddField("name", InputName);
-        form.AddField("email", InputEmail);
-
-        //create object for UnityWebRequest class from unityengine.networking 
-        UnityWebRequest www = UnityWebRequest.Post(CreateUserURL, form);
-
-        //always should return in IEnumerator
-        yield return www.Send();
-        //check if API is valid
-        if (www.isNetworkError || www.isHttpError)
-        {
-            Debug.Log(www.error);
-        }
-        //if is valid
+        if (string.IsNullOrEmpty(www.error))
+            print("Upload Successful");
         else
         {
-            Debug.Log("Form upload complete!");
+            print("Error uploading: " + www.error);
         }
-    }*/
-
-    IEnumerator PostRequest(int InputScore, string InputName, string InputEmail)
-    {
-        WWWForm form = new WWWForm();
-        form.AddField("score", InputScore);
-        form.AddField("name", InputName);
-        form.AddField("email", InputEmail);
-
-        using (UnityWebRequest uwr = UnityWebRequest.Post("http://gamesuite.rf.gd/scores/InsertUser.php", form))
-        {
-
-
-            yield return uwr.SendWebRequest();
-
-            if (uwr.isNetworkError)
-            {
-                Debug.Log("Error While Sending: " + uwr.error);
-            }
-            else
-            {
-                Debug.Log("Received: " + uwr.downloadHandler.text);
-            }
-        }    
     }
 
-    /*   public void WriteScore(int score, string name, string email)
-       {
-               WWWForm form = new WWWForm();
-               form.AddField("score", score);
-               form.AddField("name", name);
-               form.AddField("email", email);
+    public void DownloadHighscores()
+    {
+        StartCoroutine("DownloadHighscoresFromDatabase");
+    }
 
-               UnityWebRequest www = UnityWebRequest.Post(CreateUserURL, form);
+    IEnumerator DownloadHighscoresFromDatabase()
+    {
+        WWW www = new WWW(webURL + publicCode + "/pipe/");
+        yield return www;
 
-               www.SendWebRequest();
-               if (www.isNetworkError || www.isHttpError)
-               {
-                   Debug.Log(www.error);
-               }
-               else
-               {
-                   Debug.Log("Form upload complete!");
-               }
-       }*/
+        if (string.IsNullOrEmpty(www.error))
+            FormatHighscores(www.text);
+        else
+        {
+            print("Error Downloading: " + www.error);
+        }
+    }
+
+    void FormatHighscores(string textStream)
+    {
+        string[] entries = textStream.Split(new char[] { '\n' }, System.StringSplitOptions.RemoveEmptyEntries);
+        highscoresList = new Highscore[entries.Length];
+
+        for (int i = 0; i < entries.Length; i++)
+        {
+            string[] entryInfo = entries[i].Split(new char[] { '|' });
+            string username = entryInfo[0];
+            int score = int.Parse(entryInfo[1]);
+            highscoresList[i] = new Highscore(username, score);
+            print(highscoresList[i].username + ": " + highscoresList[i].score);
+        }
+    }
+    public void ScoreUp()
+    {
+        score += Random.Range(1, 50);
+    }
+}
+
+public struct Highscore
+{
+    public string username;
+    public int score;
+
+    public Highscore(string _username, int _score)
+    {
+        username = _username;
+        score = _score;
+    }
+
 
 }

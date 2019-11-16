@@ -34,7 +34,7 @@ public class EnemyFollow : MonoBehaviour
         {
             Instantiate(deathEffect, transform.position, transform.rotation);
             Destroy(gameObject);
-            FindObjectOfType<scoring>().scoreUp();
+            FindObjectOfType<scoring>().ScoreUp();
         }
         /*transform.position = Vector2.MoveTowards(transform.position, target.position, speed * Time.deltaTime);*/
     }
